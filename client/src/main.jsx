@@ -21,7 +21,7 @@ const App = () => {
   }, []);
 
   if (isLoading) {
-    return <section className="loading">Loading...</section>; // Show loading message until data is fetched
+    return <section className="loading">Loading...</section>;
   }
 
   return (
