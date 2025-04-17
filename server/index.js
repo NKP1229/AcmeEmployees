@@ -8,7 +8,7 @@ app.use(express.json());
 app.use(require("morgan")("dev"));
 const dotenv = require("dotenv");
 dotenv.config();
-const client = new pg.Client("postgres://localhost/FirstDB");
+const client = new pg.Client("postgres://localhost/acme_hr_db");
 // static routes here (you only need these for deployment)
 // app routes here
 app.use(cors());

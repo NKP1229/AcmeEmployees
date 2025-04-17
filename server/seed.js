@@ -1,7 +1,7 @@
 const pg = require("pg");
 const dotenv = require("dotenv");
 dotenv.config();
-const client = new pg.Client("postgres://localhost/FirstDB");
+const client = new pg.Client("postgres://localhost/acme_hr_db");
 const init = async (req, res) => {
   try {
     await client.connect();
