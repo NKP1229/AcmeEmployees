@@ -8,8 +8,8 @@ const init = async (req, res) => {
     const SQL = `
           DROP TABLE IF EXISTS users;
           CREATE TABLE users(
-              id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-              name VARCHAR(100),
+              id SERIAL PRIMARY KEY,
+              name VARCHAR(50),
               is_admin BOOLEAN DEFAULT FALSE
           );
           INSERT INTO users(name, is_admin) VALUES ('Nikhil', true);
