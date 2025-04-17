@@ -3,18 +3,15 @@ const express = require("express");
 const app = express();
 const pg = require("pg");
 const PORT = 3000;
-const client = new pg.Client({
-  user: process.env.DB_USER,
-  host: process.env.DB_HOST,
-  database: process.env.DB_NAME,
-  password: process.env.DB_PASSWORD,
-  port: process.env.DB_PORT,
-});
-//--> const cors = require("cors");
+const cors = require("cors");
+const dotenv = require("dotenv");
+dotenv.config();
+const client = new pg.Client("postgres://localhost/FirstDB");
+
 // static routes here (you only need these for deployment)
 
 // app routes here
-//--> app.use(cors());
+app.use(cors());
 app.listen(PORT, () => {
   console.log(`I am listening on port number ${PORT}`);
 });
@@ -22,23 +19,24 @@ app.listen(PORT, () => {
 app.get("/", (req, res) => {
   res.send("Home Page");
 });
-app.get("/api/employees", (req, res) => {
-  res.send("Get Employees.");
+
+app.get("/api/employees", async (req, res, next) => {
+  try {
+    const SQL = `
+        SELECT * from users;
+    `;
+    const response = await client.query(SQL);
+    res.status(200).send(response.rows);
+    // res.send("Get Employees.");
+  } catch (error) {
+    // res.status(400).send("Something didn't work");
+    next(error);
+  }
 });
 // create your init function
 const init = async (req, res) => {
   try {
     await client.connect();
-    const SQL = `
-        DROP TABLE IF EXISTS users;
-        CREATE TABLE users(
-            id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-            name VARCHAR(100),
-            is_admin BOOLEAN DEFAULT FALSE
-        );
-    `;
-    await client.query(SQL);
-    await client.end();
   } catch (error) {
     console.error(error);
   }
